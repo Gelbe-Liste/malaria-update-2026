@@ -1,0 +1,15 @@
+{
+  "name": "Malaria-Update 2025 | Gelbe Liste",
+  "short_name": "Malaria 2025",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#ffdd00",
+  "icons": [
+    {
+      "src": "/assets/images/glo-logo.png",
+      "sizes": "350x350",
+      "type": "image/png"
+    }
+  ]
+}
