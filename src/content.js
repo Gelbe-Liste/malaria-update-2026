@@ -234,7 +234,7 @@ export const pages = [
     number: "12",
     nav: "Gelbe Liste App",
     kicker: "Gelbe Liste",
-    title: "Wissen für den medizi-nischen Alltag – auch mobil",
+    title: "Wissen für den Alltag – auch mobil",
     subtitle: "Gelbe Liste App – mobile Lösung für Ärzte, Apotheker & medizinische Fachkreise",
     background: "/assets/images/app-thumbnail.jpg",
     focal: "center center",
