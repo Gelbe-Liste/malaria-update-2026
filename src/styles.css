@@ -1352,4 +1352,85 @@ button.secondary-cta {
     grid-column: 1 / -1 !important;
   }
 }
-\n\n/* =========================================================\n   Header action + PDF print reliability fix (v17)\n   ========================================================= */\n.topbar {\n  grid-template-columns: 54px minmax(0, 1fr) auto;\n}\n\n.topbar__actions {\n  justify-self: end;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  pointer-events: auto;\n}\n\n.pdf-button,\n.menu-button {\n  width: 48px !important;\n  height: 48px !important;\n  min-width: 48px !important;\n  min-height: 48px !important;\n  flex: 0 0 48px;\n  aspect-ratio: 1 / 1;\n  padding: 0 !important;\n  border-radius: var(--radius-control, 12px) !important;\n  pointer-events: auto;\n}\n\n.menu-button {\n  background: rgba(17,17,17,.82);\n}\n\n.pdf-button {\n  background: var(--yellow, #ffdc00);\n}\n\n@media (max-width: 640px) {\n  .topbar {\n    grid-template-columns: 42px minmax(0, 1fr) auto;\n    gap: 10px;\n  }\n\n  .topbar__actions {\n    gap: 7px;\n  }\n\n  .pdf-button,\n  .menu-button {\n    width: 42px !important;\n    height: 42px !important;\n    min-width: 42px !important;\n    min-height: 42px !important;\n    flex-basis: 42px;\n  }\n}\n
+
+/* =========================================================
+   Header + PDF controls – reliable layout fix (v18)
+   ========================================================= */
+
+/* The header itself may receive pointer events.
+   Non-interactive title remains transparent to pointer input. */
+.topbar {
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  column-gap: 14px;
+  padding-left: max(18px, env(safe-area-inset-left));
+  padding-right: max(24px, env(safe-area-inset-right));
+  pointer-events: auto;
+}
+
+.topbar__title {
+  pointer-events: none;
+}
+
+.topbar__actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+/* Force both controls to a true square, independent of older rules. */
+.topbar__actions .pdf-button,
+.topbar__actions .menu-button {
+  box-sizing: border-box;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  flex: 0 0 48px !important;
+  aspect-ratio: 1 / 1;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: var(--radius-control, 12px) !important;
+  pointer-events: auto !important;
+  overflow: hidden;
+}
+
+.topbar__actions .pdf-button {
+  display: grid;
+  place-items: center;
+  background: var(--yellow, #ffdc00);
+  color: #111;
+}
+
+.topbar__actions .menu-button {
+  display: grid;
+  place-content: center;
+  background: rgba(17,17,17,.82);
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    column-gap: 10px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
+  }
+
+  .topbar__actions {
+    gap: 8px;
+  }
+
+  .topbar__actions .pdf-button,
+  .topbar__actions .menu-button {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    max-width: 42px !important;
+    max-height: 42px !important;
+    flex: 0 0 42px !important;
+  }
+}
