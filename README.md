@@ -128,3 +128,9 @@ Die Kapitelsteuerung enthält drei konsistent gestaltete Buttons:
 - Pfeil nach oben mit Abschlusslinie: direkt zum Anfang der Anwendung
 
 Der Sprung zum Anfang wird zusätzlich als `navigation_click` mit `navigation_action: scroll_to_top` für das vorbereitete Piano-Tracking erfasst.
+
+## v4 UI refinement
+
+- Chapter navigation controls (down / previous / back to start) now use Gelbe Liste yellow.
+- Increased top breathing room on mobile between the fixed rubric/header and the page content.
+- `src/content.js` is unchanged from v3.

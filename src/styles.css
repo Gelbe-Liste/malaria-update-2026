@@ -453,3 +453,41 @@ button.secondary-cta {
 .scroll-button--top .scroll-to-top-icon__arrow {
   transition: transform .18s ease;
 }
+
+/* =========================================================
+   Navigation refinement – Gelbe Liste yellow + mobile spacing (v4)
+   ========================================================= */
+
+/* All three chapter controls use the established Gelbe Liste yellow. */
+.scroll-button {
+  background: var(--yellow);
+  color: var(--black);
+  border-color: rgba(17,17,17,.18);
+  box-shadow: 0 7px 24px rgba(0,0,0,.24);
+  backdrop-filter: none;
+}
+
+.scroll-button:hover:not(:disabled) {
+  background: #ffe433;
+  color: var(--black);
+  transform: translateY(-2px);
+  box-shadow: 0 9px 28px rgba(0,0,0,.28);
+}
+
+.scroll-button:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+}
+
+.scroll-button:disabled {
+  background: var(--yellow);
+  color: var(--black);
+  opacity: .32;
+}
+
+/* On phones, create more breathing room below the fixed header/rubric. */
+@media (max-width: 640px) {
+  .story-page__inner {
+    padding-top: max(116px, calc(env(safe-area-inset-top) + 104px));
+  }
+}
