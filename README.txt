@@ -1,8 +1,4 @@
-Zoom-Update v6
+v10 Background Update
 
-Nur diese Dateien ersetzen/ergänzen:
-- src/components/PageShell.jsx
-- src/components/ImageLightbox.jsx (neu)
-- src/styles.css
-
-src/content.js bleibt unverändert und darf aus der bestehenden Anwendung beibehalten werden.
+Nur src/styles.css ersetzen.
+content.js und alle anderen Dateien bleiben unverändert.
