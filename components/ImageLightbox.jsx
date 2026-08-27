@@ -127,7 +127,7 @@ export default function ImageLightbox({ open, image, title, chapterId, onClose }
           <span>Grafikansicht</span>
           <strong>{title}</strong>
         </div>
-        <button className="image-lightbox__close" onClick={onClose} aria-label="Grafikansicht schließen">×</button>
+        <button className="image-lightbox__close" onClick={onClose} aria-label="Grafikansicht schließen"><span aria-hidden="true">×</span><span>Schließen</span></button>
       </div>
 
       <div

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { cloneElement, isValidElement, useEffect, useRef, useState } from "react";
 import { trackEvent, trackOnce } from "../tracking/piano";
 import ImageLightbox from "./ImageLightbox";
 
@@ -36,6 +36,19 @@ export default function PageShell({ page, index, total, nextId, previousId, star
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const openGraphic = () => {
+    setImageOpen(true);
+    trackEvent("image_view_open", {
+      chapter_id: page.id,
+      image_src: page.background,
+      module_id: "malaria-update-2025"
+    });
+  };
+
+  const renderedChildren = zoomableImage && isValidElement(children)
+    ? cloneElement(children, { onOpenGraphic: openGraphic })
+    : children;
+
   return (
     <section
       ref={ref}
@@ -51,29 +64,9 @@ export default function PageShell({ page, index, total, nextId, previousId, star
       >
         <div className="story-page__scrim" />
       </div>
+
       <div className="story-page__inner">
-        {zoomableImage ? (
-          <div className={`zoomable-card-shell ${page.id === "who-zahlen" || page.id === "kernaussagen" ? "zoomable-card-shell--wide" : ""}`}>
-            {children}
-            <div className="image-view-button-row">
-              <button
-                className="image-view-button"
-                onClick={() => {
-                  setImageOpen(true);
-                  trackEvent("image_view_open", {
-                    chapter_id: page.id,
-                    image_src: page.background,
-                    module_id: "malaria-update-2025"
-                  });
-                }}
-                aria-label="Grafik öffnen"
-              >
-                <span className="image-view-button__icon" aria-hidden="true">⌕</span>
-                <span>Grafik öffnen</span>
-              </button>
-            </div>
-          </div>
-        ) : children}
+        {renderedChildren}
       </div>
 
       <div className="scroll-controls" aria-label="Kapitel-Navigation">
