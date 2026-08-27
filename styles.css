@@ -1001,8 +1001,8 @@ button.secondary-cta {
    Fullscreen/lightbox graphics remain untouched.
    ================================================================ */
 :root {
-  --story-bg-opacity: .90;
-  --story-white-wash: rgba(255,255,255,.10);
+  --story-bg-opacity: 1;
+  --story-white-wash: rgba(255,255,255,0);
 }
 
 .story-page--dark,
@@ -1039,8 +1039,8 @@ button.secondary-cta {
 
 @media (max-width: 640px) {
   :root {
-    --story-bg-opacity: .90;
-    --story-white-wash: rgba(255,255,255,.10);
+    --story-bg-opacity: 1;
+    --story-white-wash: rgba(255,255,255,0);
   }
 
   .story-page__scrim,
