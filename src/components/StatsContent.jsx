@@ -1,6 +1,6 @@
 import ContentCard from "./ContentCard";
 
-export default function StatsContent({ page }) {
+export default function StatsContent({ page, onOpenGraphic }) {
   return (
     <ContentCard wide className="stats-card">
       <p className="page-kicker">{page.kicker}</p>
@@ -19,6 +19,15 @@ export default function StatsContent({ page }) {
         {page.bullets.map((item) => <span key={item}>{item}</span>)}
       </div>
       <img className="inline-figure" src="/assets/images/cases-country.png" alt="Verteilung der Malariafälle nach Ländern" loading="lazy" />
+
+      {onOpenGraphic && (
+        <div className="graphic-open-row">
+          <button className="graphic-open-button" onClick={onOpenGraphic} aria-label="Grafik öffnen">
+            <span className="graphic-open-button__icon" aria-hidden="true">⌕</span>
+            <span>Grafik öffnen</span>
+          </button>
+        </div>
+      )}
     </ContentCard>
   );
 }

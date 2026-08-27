@@ -127,7 +127,7 @@ export default function ImageLightbox({ open, image, title, chapterId, onClose }
           <span>Grafikansicht</span>
           <strong>{title}</strong>
         </div>
-        <button className="image-lightbox__close" onClick={onClose} aria-label="Grafikansicht schließen">×</button>
+        <button className="image-lightbox__close" onClick={onClose} aria-label="Grafikansicht schließen"><span aria-hidden="true">×</span><span>Schließen</span></button>
       </div>
 
       <div
@@ -153,6 +153,9 @@ export default function ImageLightbox({ open, image, title, chapterId, onClose }
         </button>
         <button onClick={() => changeScale(STEP)} disabled={scale >= MAX_SCALE} aria-label="Vergrößern">+</button>
         <button className="image-lightbox__reset" onClick={resetView} aria-label="Originalansicht wiederherstellen">1:1</button>
+        <button className="image-lightbox__close-labeled" onClick={onClose} aria-label="Grafik schließen">
+          <span aria-hidden="true">×</span> Schließen
+        </button>
       </div>
 
       <p className="image-lightbox__hint">Mit +/− zoomen · auf dem Smartphone mit zwei Fingern vergrößern · vergrößerte Grafik verschieben</p>

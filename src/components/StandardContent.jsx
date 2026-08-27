@@ -4,7 +4,7 @@ function Quote({ children }) {
   return <blockquote className="editorial-quote">{children}</blockquote>;
 }
 
-export default function StandardContent({ page }) {
+export default function StandardContent({ page, onOpenGraphic }) {
   return (
     <ContentCard wide={page.id === "who-zahlen" || page.id === "resistenzen"}>
       <p className="page-kicker">{page.kicker}</p>
@@ -30,6 +30,15 @@ export default function StandardContent({ page }) {
       ))}
       {page.quote && <Quote>{page.quote}</Quote>}
       {page.note && <div className="important-note">{page.note}</div>}
+
+      {onOpenGraphic && (
+        <div className="graphic-open-row">
+          <button className="graphic-open-button" onClick={onOpenGraphic} aria-label="Grafik öffnen">
+            <span className="graphic-open-button__icon" aria-hidden="true">⌕</span>
+            <span>Grafik öffnen</span>
+          </button>
+        </div>
+      )}
     </ContentCard>
   );
 }

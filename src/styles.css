@@ -712,3 +712,185 @@ button.secondary-cta {
     font-size: .66rem;
   }
 }
+
+/* =========================================================
+   Graphic viewer placement + explicit close control (v7)
+   ========================================================= */
+.zoomable-card-shell {
+  width: min(620px, 100%);
+  position: relative;
+}
+
+.zoomable-card-shell--wide {
+  width: min(760px, 100%);
+}
+
+.zoomable-card-shell > .content-card {
+  width: 100%;
+  padding-bottom: clamp(92px, 8vw, 112px);
+}
+
+.image-view-button-row {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: clamp(28px, 3.2vw, 40px);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.image-view-button {
+  position: static;
+  top: auto;
+  right: auto;
+  pointer-events: auto;
+}
+
+.image-lightbox__close-labeled {
+  min-width: 118px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding-inline: 16px !important;
+  font-size: .82rem !important;
+}
+
+.image-lightbox__close-labeled span {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .zoomable-card-shell,
+  .zoomable-card-shell--wide {
+    width: 100%;
+  }
+
+  .zoomable-card-shell > .content-card {
+    padding-bottom: 94px;
+  }
+
+  .image-view-button-row {
+    bottom: 26px;
+  }
+
+  .image-view-button {
+    min-height: 44px;
+    padding: 0 14px 0 12px;
+    font-size: .76rem;
+  }
+
+  .image-lightbox__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .image-lightbox__close-labeled {
+    flex-basis: 100%;
+    width: min(220px, 100%);
+    margin-top: 2px;
+  }
+}
+
+/* =========================================================
+   Graphic viewer – robust in-card trigger + visible close (v8)
+   ========================================================= */
+.graphic-open-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(28px, 4vw, 42px);
+  padding-top: clamp(22px, 3vw, 30px);
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.story-page--light .graphic-open-row {
+  border-top-color: rgba(17,17,17,.12);
+}
+
+.graphic-open-button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 18px;
+  border: 1px solid rgba(17,17,17,.18);
+  border-radius: var(--radius-control);
+  background: var(--yellow);
+  color: var(--black);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+
+.graphic-open-button:hover {
+  filter: brightness(1.035);
+  transform: translateY(-1px);
+}
+
+.graphic-open-button__icon {
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Remove the obsolete overlay trigger from v6/v7 if old markup survives via cache. */
+.image-view-button-row { display: none !important; }
+
+.image-lightbox__close {
+  width: auto !important;
+  min-width: 126px;
+  height: 46px;
+  padding: 0 15px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: .82rem !important;
+  white-space: nowrap;
+}
+
+.image-lightbox__close > span:first-child {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.image-lightbox__close > span:last-child {
+  font-size: .82rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .graphic-open-row {
+    margin-top: 26px;
+    padding-top: 22px;
+  }
+
+  .graphic-open-button {
+    min-height: 46px;
+    padding-inline: 16px;
+    font-size: .8rem;
+  }
+
+  .image-lightbox__header {
+    min-height: 58px;
+  }
+
+  .image-lightbox__close {
+    min-width: 112px;
+    height: 42px;
+    padding-inline: 12px !important;
+  }
+}
