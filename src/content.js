@@ -125,7 +125,7 @@ export const pages = [
     number: "07",
     nav: "Praxisblock 2",
     kicker: "Praxisblock 2",
-    title: "Chemo-Prophylaxe – Atovaquon/ Proguanil als Standardoption",
+    title: "Chemo-Prophylaxe – Atovaquon/ Proguanil als Standard-Option",
     subtitle: "„Gold-Standard“ in der Praxis, aber individuell",
     background: "/assets/images/pills-map.jpg",
     focal: "center center",
