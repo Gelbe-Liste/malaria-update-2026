@@ -134,3 +134,35 @@ Der Sprung zum Anfang wird zusätzlich als `navigation_click` mit `navigation_ac
 - Chapter navigation controls (down / previous / back to start) now use Gelbe Liste yellow.
 - Increased top breathing room on mobile between the fixed rubric/header and the page content.
 - `src/content.js` is unchanged from v3.
+
+## v5 – Mobile spacing
+
+- Increased reserved bottom space inside each mobile story page.
+- The navigation controls now have a dedicated footer zone instead of sitting directly below the content card.
+- Target visual gap between content card and navigation is approximately 28–32 px on phones, with safe-area handling for iOS.
+
+## v6 – Vergrößerbare Fachgrafiken
+
+Die beiden fachlich relevanten Hintergrundgrafiken in „Kernaussagen in 60 Sekunden“ und „World Malaria Report 2025“ besitzen jetzt einen Button „Grafik vergrößern“.
+
+Die Fullscreen-Ansicht unterstützt:
+- Zoom + / − bis 400 %
+- Zurücksetzen auf 100 % / 1:1
+- Verschieben bei vergrößerter Ansicht
+- Pinch-Zoom auf Touch-Geräten
+- Mausrad-Zoom am Desktop
+- ESC bzw. Schließen-Button
+- Piano-Events `image_view_open`, `image_zoom`, `image_view_close`
+
+`src/content.js` wurde für dieses Update nicht verändert.
+
+## v7 – Grafikviewer
+- Triggertext auf **„Grafik öffnen“** geändert.
+- Trigger sitzt in den beiden relevanten Kapiteln unten mittig innerhalb des Textrahmens.
+- Im Fullscreen-Viewer gibt es zusätzlich einen deutlich beschrifteten gelben **„× Schließen“**-Button in der unteren Werkzeugleiste.
+- `src/content.js` wurde nicht verändert.
+
+## v8 – Grafikviewer
+- „Grafik öffnen“ sitzt jetzt tatsächlich als letzter Inhalt innerhalb des Textrahmens.
+- Viewer-Schließen oben rechts dauerhaft als „× Schließen“ beschriftet.
+- `content.js` wurde nicht verändert.

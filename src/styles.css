@@ -894,3 +894,58 @@ button.secondary-cta {
     padding-inline: 12px !important;
   }
 }
+
+/* v9: graphic viewer trigger – deliberately explicit and independent of PageShell injection */
+.graphic-open-row {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  width: 100%;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.story-page--light .graphic-open-row {
+  border-top-color: rgba(15, 15, 15, 0.16);
+}
+
+.graphic-open-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: var(--radius-control, 12px);
+  background: #ffdc00;
+  color: #111;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.graphic-open-button__icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.graphic-open-button:hover,
+.graphic-open-button:focus-visible {
+  background: #ffe42f;
+}
+
+@media (max-width: 640px) {
+  .graphic-open-row {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+
+  .graphic-open-button {
+    min-height: 50px;
+    padding-inline: 20px;
+  }
+}

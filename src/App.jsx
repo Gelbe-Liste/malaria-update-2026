@@ -10,22 +10,34 @@ import StandardContent from "./components/StandardContent";
 import StepsContent from "./components/StepsContent";
 import SourcesContent from "./components/SourcesContent";
 import VideoContent from "./components/VideoContent";
-import { trackOnce } from "./tracking/piano";
+import ImageLightbox from "./components/ImageLightbox";
+import { trackEvent, trackOnce } from "./tracking/piano";
 
-function PageContent({ page }) {
+const ZOOMABLE_CHAPTERS = new Set(["kernaussagen", "who-zahlen"]);
+
+function PageContent({ page, onOpenGraphic }) {
+  const graphicHandler = ZOOMABLE_CHAPTERS.has(page.id) ? onOpenGraphic : undefined;
+
   switch (page.kind) {
-    case "hero": return <HeroContent page={page} />;
-    case "stats": return <StatsContent page={page} />;
-    case "steps": return <StepsContent page={page} />;
-    case "sources": return <SourcesContent page={page} />;
-    case "video": return <VideoContent page={page} />;
-    default: return <StandardContent page={page} />;
+    case "hero":
+      return <HeroContent page={page} />;
+    case "stats":
+      return <StatsContent page={page} onOpenGraphic={graphicHandler} />;
+    case "steps":
+      return <StepsContent page={page} />;
+    case "sources":
+      return <SourcesContent page={page} />;
+    case "video":
+      return <VideoContent page={page} />;
+    default:
+      return <StandardContent page={page} onOpenGraphic={graphicHandler} />;
   }
 }
 
 export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openGraphic, setOpenGraphic] = useState(null);
 
   const handleActive = useCallback((index) => {
     setActiveIndex(index);
@@ -34,6 +46,25 @@ export default function App() {
       history.replaceState(null, "", index === 0 ? window.location.pathname : `#${page.id}`);
     }
   }, []);
+
+  const handleOpenGraphic = useCallback((page) => {
+    setOpenGraphic(page);
+    trackEvent("image_view_open", {
+      chapter_id: page.id,
+      image_src: page.background,
+      module_id: "malaria-update-2025"
+    });
+  }, []);
+
+  const handleCloseGraphic = useCallback(() => {
+    if (openGraphic) {
+      trackEvent("image_view_close", {
+        chapter_id: openGraphic.id,
+        module_id: "malaria-update-2025"
+      });
+    }
+    setOpenGraphic(null);
+  }, [openGraphic]);
 
   useEffect(() => {
     trackOnce("page-display", "page.display", {
@@ -93,10 +124,18 @@ export default function App() {
             onActive={handleActive}
             long={["who-zahlen", "beratung", "chemoprophylaxe", "standby", "resistenzen", "literatur"].includes(page.id)}
           >
-            <PageContent page={page} />
+            <PageContent page={page} onOpenGraphic={() => handleOpenGraphic(page)} />
           </PageShell>
         ))}
       </main>
+
+      <ImageLightbox
+        open={Boolean(openGraphic)}
+        image={openGraphic?.background}
+        title={openGraphic?.kicker || openGraphic?.nav || "Grafik"}
+        chapterId={openGraphic?.id}
+        onClose={handleCloseGraphic}
+      />
     </>
   );
 }
