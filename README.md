@@ -118,3 +118,13 @@ wird nicht minifiziert. JavaScript wird weiterhin normal optimiert.
 - CTA- und Info-Buttons mit abgerundeten Ecken
 - harmonisierte Radien für Hinweise, Statistik-Kacheln und weitere Module
 - Vercel-sicheres Setup mit Vite 7.3.6 und Node.js 22
+
+## Navigation v3
+
+Die Kapitelsteuerung enthält drei konsistent gestaltete Buttons:
+
+- ↓ nächster Abschnitt
+- ↑ vorheriger Abschnitt
+- Pfeil nach oben mit Abschlusslinie: direkt zum Anfang der Anwendung
+
+Der Sprung zum Anfang wird zusätzlich als `navigation_click` mit `navigation_action: scroll_to_top` für das vorbereitete Piano-Tracking erfasst.

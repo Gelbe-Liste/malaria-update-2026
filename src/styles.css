@@ -411,3 +411,45 @@ button.secondary-cta {
     border-radius: 11px;
   }
 }
+
+
+/* =========================================================
+   Global "back to start" control (v3)
+   ========================================================= */
+.scroll-button--top {
+  position: relative;
+}
+
+.scroll-to-top-icon {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.scroll-to-top-icon__bar {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.scroll-to-top-icon__arrow {
+  position: absolute;
+  inset: 4px 0 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.scroll-button--top:hover .scroll-to-top-icon__arrow {
+  transform: translateY(-2px);
+}
+
+.scroll-button--top .scroll-to-top-icon__arrow {
+  transition: transform .18s ease;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { trackOnce } from "../tracking/piano";
+import { trackEvent, trackOnce } from "../tracking/piano";
 
-export default function PageShell({ page, index, total, nextId, previousId, onActive, children, long = false }) {
+export default function PageShell({ page, index, total, nextId, previousId, startId, onActive, children, long = false }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(index === 0);
 
@@ -64,10 +64,28 @@ export default function PageShell({ page, index, total, nextId, previousId, onAc
         <button
           className="scroll-button scroll-button--up"
           onClick={() => scrollTo(previousId)}
-          aria-label={previousId ? "Zum vorherigen Kapitel" : "Zum Seitenanfang"}
+          aria-label={previousId ? "Zum vorherigen Kapitel" : "Kein vorheriges Kapitel"}
           disabled={!previousId}
         >
           <span aria-hidden="true">↑</span>
+        </button>
+        <button
+          className="scroll-button scroll-button--top"
+          onClick={() => {
+            scrollTo(startId);
+            trackEvent("navigation_click", {
+              navigation_action: "scroll_to_top",
+              chapter_id: page.id,
+              module_id: "malaria-update-2025"
+            });
+          }}
+          aria-label="Zum Anfang der Anwendung"
+          title="Zum Anfang"
+        >
+          <span className="scroll-to-top-icon" aria-hidden="true">
+            <span className="scroll-to-top-icon__bar" />
+            <span className="scroll-to-top-icon__arrow">↑</span>
+          </span>
         </button>
       </div>
     </section>
