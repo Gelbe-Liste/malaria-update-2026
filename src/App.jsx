@@ -75,10 +75,9 @@ export default function App() {
       format: "A4_portrait"
     });
 
-    // Give the browser a moment to settle layout before opening print preview.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => window.print());
-    });
+    // Open the native print dialog directly from the user click.
+    // This is more reliable on Safari/iOS and browsers with user-gesture restrictions.
+    window.print();
   }, []);
 
   useEffect(() => {

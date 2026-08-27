@@ -187,3 +187,10 @@ Die Fullscreen-Ansicht unterstützt:
 - Navigation, Scroll-Steuerung, Lightbox und interaktive Buttons werden im Druck ausgeblendet
 - Video wird im PDF über das Posterbild repräsentiert
 - Tracking-Event: `print_pdf_open`
+
+
+## v17
+- PDF button made explicitly clickable inside the pointer-events-disabled header.
+- Print dialog now opens directly from the user click.
+- Header grid supports two right-side controls.
+- PDF and menu controls are forced to equal square dimensions with rounded corners.
