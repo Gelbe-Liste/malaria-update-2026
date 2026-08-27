@@ -40,11 +40,11 @@ export default function PageShell({ page, index, total, nextId, previousId, star
       className={`story-page story-page--${page.tone} story-page--${page.align} ${long ? "story-page--long" : ""} ${visible ? "is-visible" : ""}`}
     >
       <div
-        className="story-page__background"
-        style={{
+        className={`story-page__background ${page.background ? "" : "story-page__background--plain"}`}
+        style={page.background ? {
           backgroundImage: `url("${page.background}")`,
           backgroundPosition: page.focal || "center center"
-        }}
+        } : undefined}
       >
         <div className="story-page__scrim" />
       </div>

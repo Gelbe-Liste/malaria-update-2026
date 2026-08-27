@@ -949,3 +949,66 @@ button.secondary-cta {
     padding-inline: 20px;
   }
 }
+
+
+/* =========================================================
+   Impressum / legal closing chapter (v15)
+   ========================================================= */
+.story-page__background--plain {
+  background-image: none !important;
+  background-color: #f3f3f1;
+}
+
+.story-page__background--plain .story-page__scrim {
+  background: linear-gradient(135deg, rgba(255, 220, 0, .14), rgba(255, 255, 255, .82));
+}
+
+.imprint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
+  margin-top: 28px;
+}
+
+.imprint-section {
+  padding-top: 18px;
+  border-top: 1px solid rgba(17, 17, 17, .14);
+}
+
+.imprint-section--full {
+  grid-column: 1 / -1;
+}
+
+.imprint-section h3 {
+  margin: 0 0 10px;
+  font-size: clamp(.92rem, 1.5vw, 1.05rem);
+  line-height: 1.25;
+}
+
+.imprint-section p {
+  margin: 0 0 12px;
+  font-size: clamp(.84rem, 1.35vw, .96rem);
+  line-height: 1.6;
+}
+
+.imprint-section a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .imprint-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 22px;
+  }
+
+  .imprint-section--full {
+    grid-column: auto;
+  }
+
+  .imprint-section {
+    padding-top: 15px;
+  }
+}

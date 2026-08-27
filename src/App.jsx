@@ -10,6 +10,7 @@ import StandardContent from "./components/StandardContent";
 import StepsContent from "./components/StepsContent";
 import SourcesContent from "./components/SourcesContent";
 import VideoContent from "./components/VideoContent";
+import ImprintContent from "./components/ImprintContent";
 import ImageLightbox from "./components/ImageLightbox";
 import { trackEvent, trackOnce } from "./tracking/piano";
 
@@ -29,6 +30,8 @@ function PageContent({ page, onOpenGraphic }) {
       return <SourcesContent page={page} />;
     case "video":
       return <VideoContent page={page} />;
+    case "imprint":
+      return <ImprintContent page={page} />;
     default:
       return <StandardContent page={page} onOpenGraphic={graphicHandler} />;
   }
@@ -122,7 +125,7 @@ export default function App() {
             previousId={pages[index - 1]?.id}
             startId={pages[0]?.id}
             onActive={handleActive}
-            long={["who-zahlen", "beratung", "chemoprophylaxe", "standby", "resistenzen", "literatur"].includes(page.id)}
+            long={["who-zahlen", "beratung", "chemoprophylaxe", "standby", "resistenzen", "literatur", "impressum"].includes(page.id)}
           >
             <PageContent page={page} onOpenGraphic={() => handleOpenGraphic(page)} />
           </PageShell>

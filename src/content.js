@@ -241,6 +241,16 @@ export const pages = [
     tone: "dark",
     align: "left",
     kind: "video"
+  },
+  {
+    id: "impressum",
+    number: "13",
+    nav: "Impressum",
+    kicker: "Rechtliche Angaben",
+    title: "Impressum",
+    tone: "light",
+    align: "left",
+    kind: "imprint"
   }
 ];
 

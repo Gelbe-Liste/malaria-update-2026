@@ -166,3 +166,12 @@ Die Fullscreen-Ansicht unterstützt:
 - „Grafik öffnen“ sitzt jetzt tatsächlich als letzter Inhalt innerhalb des Textrahmens.
 - Viewer-Schließen oben rechts dauerhaft als „× Schließen“ beschriftet.
 - `content.js` wurde nicht verändert.
+
+## v15 – Impressum
+
+- Neues Abschlusskapitel „Impressum“
+- kompakte Anbieter- und Unternehmensangaben
+- Redaktion / Corporate Publishing
+- Verantwortliche für journalistisch-redaktionelle Inhalte nach § 18 Abs. 2 MStV
+- Bildnachweise
+- kein Hintergrundbild im Impressum; ruhige helle Abschlussfläche
