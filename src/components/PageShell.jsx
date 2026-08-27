@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { trackEvent, trackOnce } from "../tracking/piano";
+import ImageLightbox from "./ImageLightbox";
 
 export default function PageShell({ page, index, total, nextId, previousId, startId, onActive, children, long = false }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(index === 0);
+  const [imageOpen, setImageOpen] = useState(false);
+  const zoomableImage = ["kernaussagen", "who-zahlen"].includes(page.id);
 
   useEffect(() => {
     const element = ref.current;
@@ -52,6 +55,24 @@ export default function PageShell({ page, index, total, nextId, previousId, star
         {children}
       </div>
 
+      {zoomableImage && (
+        <button
+          className="image-view-button"
+          onClick={() => {
+            setImageOpen(true);
+            trackEvent("image_view_open", {
+              chapter_id: page.id,
+              image_src: page.background,
+              module_id: "malaria-update-2025"
+            });
+          }}
+          aria-label="Hintergrundgrafik vergrößern"
+        >
+          <span className="image-view-button__icon" aria-hidden="true">⌕</span>
+          <span>Grafik vergrößern</span>
+        </button>
+      )}
+
       <div className="scroll-controls" aria-label="Kapitel-Navigation">
         <button
           className="scroll-button scroll-button--down"
@@ -88,6 +109,20 @@ export default function PageShell({ page, index, total, nextId, previousId, star
           </span>
         </button>
       </div>
+
+      <ImageLightbox
+        open={imageOpen}
+        image={page.background}
+        title={page.kicker || page.nav}
+        chapterId={page.id}
+        onClose={() => {
+          setImageOpen(false);
+          trackEvent("image_view_close", {
+            chapter_id: page.id,
+            module_id: "malaria-update-2025"
+          });
+        }}
+      />
     </section>
   );
 }
