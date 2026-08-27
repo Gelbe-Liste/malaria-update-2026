@@ -949,3 +949,47 @@ button.secondary-cta {
     padding-inline: 20px;
   }
 }
+
+/* ================================================================
+   Background image de-emphasis (v10)
+   Keeps enlarged/lightbox graphics untouched.
+   ================================================================ */
+:root {
+  --story-bg-opacity: .76;
+}
+
+.story-page--dark {
+  background: #111;
+}
+
+.story-page--light {
+  background: #f3f3f1;
+}
+
+.story-page__background {
+  opacity: var(--story-bg-opacity);
+  filter: saturate(.82) contrast(.92) brightness(.96);
+}
+
+/* Dark chapters benefit from a very subtle additional dimming. */
+.story-page--dark .story-page__background {
+  filter: saturate(.80) contrast(.90) brightness(.90);
+}
+
+/* Light chapters fade gently into the neutral page background. */
+.story-page--light .story-page__background {
+  filter: saturate(.78) contrast(.90) brightness(1.03);
+}
+
+/* Full-screen image viewer must always show the source graphic clearly. */
+.image-lightbox img,
+.image-lightbox__stage img {
+  opacity: 1;
+  filter: none;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --story-bg-opacity: .72;
+  }
+}
