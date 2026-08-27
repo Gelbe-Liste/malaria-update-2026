@@ -272,3 +272,142 @@ h1, h2, h3, p { text-wrap: pretty; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .story-page__background { transform: none !important; }
 }
+
+/* =========================================================
+   UI harmonization – rounded Gelbe Liste controls (v2)
+   ========================================================= */
+:root {
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-small: 10px;
+}
+
+/* Header: Gelbe Liste logo left, chapter navigation button right */
+.topbar__logo {
+  justify-self: start;
+  border-radius: var(--radius-control);
+}
+
+.menu-button {
+  justify-self: end;
+  border-radius: var(--radius-control);
+}
+
+/* Menu close control follows the same square/rounded visual language */
+.menu-overlay__header button {
+  border-radius: var(--radius-control);
+}
+
+/* Main content windows */
+.content-card {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+/* Supporting information / editorial modules */
+.stat-tile,
+.important-note,
+.inline-figure,
+.country-grid span,
+.step__number,
+.editorial-quote {
+  border-radius: var(--radius-small);
+}
+
+/* CTA / information buttons */
+.primary-cta,
+.secondary-cta,
+.cta-row a,
+button.primary-cta,
+button.secondary-cta {
+  border-radius: var(--radius-control);
+}
+
+/* Chapter scroll navigation: down left, up right */
+.scroll-controls {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-button {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-control);
+  border: 1px solid rgba(255,255,255,.52);
+  background: rgba(0,0,0,.48);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 25px rgba(0,0,0,.22);
+  backdrop-filter: blur(8px);
+  transition: transform .18s ease, background .18s ease, opacity .18s ease;
+}
+
+.scroll-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,.68);
+}
+
+.scroll-button:focus-visible,
+.menu-button:focus-visible,
+.menu-overlay__header button:focus-visible,
+.primary-cta:focus-visible,
+.secondary-cta:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.scroll-button span {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.scroll-button--down:not(:disabled) span {
+  animation: arrowPulseDown 2s ease-in-out infinite;
+}
+
+.scroll-button--up:not(:disabled) span {
+  animation: arrowPulseUp 2s ease-in-out infinite;
+}
+
+.scroll-button:disabled {
+  opacity: .28;
+  cursor: default;
+}
+
+@keyframes arrowPulseDown {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+@keyframes arrowPulseUp {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* The old single round arrow is no longer rendered. Keep this as a safeguard. */
+.next-arrow { display: none !important; }
+
+@media (max-width: 640px) {
+  .content-card {
+    border-radius: 16px;
+  }
+
+  .scroll-button {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+  }
+
+  .topbar__logo,
+  .menu-button {
+    border-radius: 11px;
+  }
+}

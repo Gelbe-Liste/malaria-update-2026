@@ -56,7 +56,7 @@ export const pages = [
       },
       {
         heading: "Reisemedizin in Deutschland – die Praxis bleibt klar",
-        text: "Expositionsprophylaxe + risikoadaptierte Chemo-Prophylaxe oder Standby [3, 4, 5]. Atovaquon/ Proguanil ist in der reisemedizinischen Praxis eine sehr häufige Standardoption – vor allem für Kurz- und Last-Minute-Reisen [3, 6, 7]."
+        text: "Expositionsprophylaxe + risikoadaptierte Chemoprophylaxe oder Standby [3, 4, 5]. Atovaquon/Proguanil ist in der reisemedizinischen Praxis eine sehr häufige Standardoption – vor allem für Kurz- und Last-Minute-Reisen [3, 6, 7]."
       }
     ]
   },
@@ -125,7 +125,7 @@ export const pages = [
     number: "07",
     nav: "Praxisblock 2",
     kicker: "Praxisblock 2",
-    title: "Chemo-Prophylaxe – Atovaquon/ Proguanil als Standard-Option",
+    title: "Chemoprophylaxe – Atovaquon/Proguanil als Standardoption",
     subtitle: "„Gold-Standard“ in der Praxis, aber individuell",
     background: "/assets/images/pills-map.jpg",
     focal: "center center",
@@ -174,7 +174,7 @@ export const pages = [
     number: "09",
     nav: "Praxisblock 4",
     kicker: "Praxisblock 4",
-    title: "Rückkehrer-Fieber – Diagnostik, typische Fallstricke, „rote Flaggen“",
+    title: "Rückkehrerfieber – Diagnostik, typische Fallstricke, „rote Flaggen“",
     background: "/assets/images/thermometer.jpg",
     focal: "center center",
     tone: "light",
@@ -234,7 +234,7 @@ export const pages = [
     number: "12",
     nav: "Gelbe Liste App",
     kicker: "Gelbe Liste",
-    title: "Wissen für den Alltag – auch mobil",
+    title: "Wissen für den medizinischen Alltag – auch mobil",
     subtitle: "Gelbe Liste App – mobile Lösung für Ärzte, Apotheker & medizinische Fachkreise",
     background: "/assets/images/app-thumbnail.jpg",
     focal: "center center",

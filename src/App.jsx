@@ -88,6 +88,7 @@ export default function App() {
             index={index}
             total={pages.length}
             nextId={pages[index + 1]?.id}
+            previousId={pages[index - 1]?.id}
             onActive={handleActive}
             long={["who-zahlen", "beratung", "chemoprophylaxe", "standby", "resistenzen", "literatur"].includes(page.id)}
           >

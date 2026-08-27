@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { trackOnce } from "../tracking/piano";
 
-export default function PageShell({ page, index, total, nextId, onActive, children, long = false }) {
+export default function PageShell({ page, index, total, nextId, previousId, onActive, children, long = false }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(index === 0);
 
@@ -28,8 +28,8 @@ export default function PageShell({ page, index, total, nextId, onActive, childr
     return () => observer.disconnect();
   }, [index, onActive, page]);
 
-  const scrollNext = () => {
-    const targetId = nextId || "intro";
+  const scrollTo = (targetId) => {
+    if (!targetId) return;
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -51,9 +51,25 @@ export default function PageShell({ page, index, total, nextId, onActive, childr
       <div className="story-page__inner">
         {children}
       </div>
-      <button className="next-arrow" onClick={scrollNext} aria-label={nextId ? "Zum nächsten Kapitel" : "Zum Anfang"}>
-        <span>{nextId ? "↓" : "↑"}</span>
-      </button>
+
+      <div className="scroll-controls" aria-label="Kapitel-Navigation">
+        <button
+          className="scroll-button scroll-button--down"
+          onClick={() => scrollTo(nextId)}
+          aria-label={nextId ? "Zum nächsten Kapitel" : "Kein weiteres Kapitel"}
+          disabled={!nextId}
+        >
+          <span aria-hidden="true">↓</span>
+        </button>
+        <button
+          className="scroll-button scroll-button--up"
+          onClick={() => scrollTo(previousId)}
+          aria-label={previousId ? "Zum vorherigen Kapitel" : "Zum Seitenanfang"}
+          disabled={!previousId}
+        >
+          <span aria-hidden="true">↑</span>
+        </button>
+      </div>
     </section>
   );
 }

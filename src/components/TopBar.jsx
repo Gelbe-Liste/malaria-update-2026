@@ -12,15 +12,6 @@ export default function TopBar({ activeIndex, pages, onMenu }) {
 
   return (
     <header className={`topbar ${scrolled ? "topbar--scrolled" : ""}`}>
-      <button className="menu-button" onClick={onMenu} aria-label="Kapitelmenü öffnen">
-        <span />
-        <span />
-        <span />
-      </button>
-      <div className="topbar__title" aria-live="polite">
-        <span className="topbar__eyebrow">Reisemedizin</span>
-        <span className="topbar__chapter">{pages[activeIndex]?.nav}</span>
-      </div>
       <a
         className="topbar__logo"
         href="https://www.gelbe-liste.de/"
@@ -30,6 +21,17 @@ export default function TopBar({ activeIndex, pages, onMenu }) {
       >
         <img src="/assets/images/glo-logo.png" alt="Gelbe Liste" />
       </a>
+
+      <div className="topbar__title" aria-live="polite">
+        <span className="topbar__eyebrow">Reisemedizin</span>
+        <span className="topbar__chapter">{pages[activeIndex]?.nav}</span>
+      </div>
+
+      <button className="menu-button" onClick={onMenu} aria-label="Kapitelmenü öffnen">
+        <span />
+        <span />
+        <span />
+      </button>
     </header>
   );
 }

@@ -93,3 +93,28 @@ Das 1080×1920-Video wurde für die Webauslieferung auf 720 px Breite transkodie
 ## Hinweis zur 1:1-Umsetzung
 
 Diese Version ist eine React-Neuimplementierung und keine Kopie des Pageflow-Codes. Inhalt, Reihenfolge, Bildwelt und das immersive Vollbild-/Scrollprinzip wurden anhand der veröffentlichten Version und der bereitgestellten Projektdateien reproduziert. Pageflow-spezifische interne Übergänge, Fonts und Engine-Details können sich im Pixelvergleich unterscheiden und können bei Bedarf in einem weiteren Feinschliff anhand konkreter Desktop-/Mobile-Screenshots angeglichen werden.
+
+## Vercel / Vite 8 CSS-Fix (v1.0.1)
+
+Vite 8 verwendet standardmäßig Lightning CSS zur CSS-Minifizierung. Falls Vercel mit
+`Cannot find package 'napi-wasm' ... lightningcss/wasm-node.mjs` abbricht, ist in diesem
+Projekt bereits der Workaround aktiv:
+
+```js
+css: { transformer: "postcss" },
+build: { cssMinify: false }
+```
+
+Die Darstellung und Funktionalität bleiben unverändert; lediglich die Produktions-CSS-Datei
+wird nicht minifiziert. JavaScript wird weiterhin normal optimiert.
+
+## UI-Anpassung v1.1.0
+
+- Gelbe-Liste-Logo links im Header
+- Menübutton rechts im Header
+- Menübutton quadratisch mit abgerundeten Ecken
+- Kapitel-Navigation mit zwei quadratischen Buttons: nach unten / nach oben
+- Content-Fenster mit abgerundeten Ecken
+- CTA- und Info-Buttons mit abgerundeten Ecken
+- harmonisierte Radien für Hinweise, Statistik-Kacheln und weitere Module
+- Vercel-sicheres Setup mit Vite 7.3.6 und Node.js 22
