@@ -491,3 +491,19 @@ button.secondary-cta {
     padding-top: max(116px, calc(env(safe-area-inset-top) + 104px));
   }
 }
+
+/* =========================================================
+   Mobile chapter-navigation spacing refinement (v5)
+   Reserve a dedicated footer zone so controls never hug the card.
+   ========================================================= */
+@media (max-width: 640px) {
+  .story-page__inner {
+    /* Header clearance + dedicated space below the content card. */
+    padding-top: max(116px, calc(env(safe-area-inset-top) + 104px));
+    padding-bottom: max(156px, calc(env(safe-area-inset-bottom) + 144px));
+  }
+
+  .scroll-controls {
+    bottom: max(26px, calc(env(safe-area-inset-bottom) + 18px));
+  }
+}
