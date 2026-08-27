@@ -69,6 +69,18 @@ export default function App() {
     setOpenGraphic(null);
   }, [openGraphic]);
 
+  const handlePrint = useCallback(() => {
+    trackEvent("print_pdf_open", {
+      module_id: "malaria-update-2025",
+      format: "A4_portrait"
+    });
+
+    // Give the browser a moment to settle layout before opening print preview.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => window.print());
+    });
+  }, []);
+
   useEffect(() => {
     trackOnce("page-display", "page.display", {
       page: "reisemedizin-malaria-update-2025",
@@ -110,7 +122,7 @@ export default function App() {
 
   return (
     <>
-      <TopBar activeIndex={activeIndex} pages={pages} onMenu={() => setMenuOpen(true)} />
+      <TopBar activeIndex={activeIndex} pages={pages} onMenu={() => setMenuOpen(true)} onPrint={handlePrint} />
       <ProgressRail pages={pages} activeIndex={activeIndex} />
       <MenuOverlay open={menuOpen} pages={pages} activeIndex={activeIndex} onClose={() => setMenuOpen(false)} />
 

@@ -1012,3 +1012,343 @@ button.secondary-cta {
     padding-top: 15px;
   }
 }
+
+
+/* =========================================================
+   PDF / print export (v16)
+   Browser print dialog -> A4 portrait / Save as PDF
+   ========================================================= */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pdf-button {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(17,17,17,.16);
+  border-radius: var(--radius-control, 12px);
+  background: var(--yellow, #ffdc00);
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  transition: transform .18s ease, filter .18s ease;
+}
+
+.pdf-button:hover,
+.pdf-button:focus-visible {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.pdf-button__icon {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.print-chapter-image,
+.print-video-poster {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .topbar__actions { gap: 7px; }
+  .pdf-button { width: 44px; height: 44px; }
+  .pdf-button__icon { width: 24px; height: 24px; }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 12mm 12mm 14mm;
+}
+
+@media print {
+  html, body {
+    width: 210mm !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+  }
+
+  .topbar,
+  .progress-rail,
+  .menu-overlay,
+  .scroll-controls,
+  .image-lightbox,
+  .graphic-open-row,
+  .story-page__background {
+    display: none !important;
+  }
+
+  .story {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .story-page {
+    position: relative !important;
+    display: block !important;
+    width: auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    color: #111 !important;
+    background: #fff !important;
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .story-page:first-child {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .print-chapter-image {
+    display: block !important;
+    width: 100%;
+    height: 62mm;
+    margin: 0 0 8mm !important;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 5mm;
+    background: #f0f0ee;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-chapter-image img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .story-page__inner {
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .content-card,
+  .content-card--wide,
+  .hero-card,
+  .stats-card,
+  .video-card {
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    background: #fff !important;
+    color: #111 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .content-card *,
+  .hero-card *,
+  .stats-card * {
+    color: #111 !important;
+  }
+
+  .page-kicker {
+    margin: 0 0 3mm !important;
+    color: #111 !important;
+    font-size: 9pt !important;
+    font-weight: 800 !important;
+    letter-spacing: .08em !important;
+  }
+
+  h1, h2 {
+    margin: 0 0 4mm !important;
+    color: #111 !important;
+    font-size: 22pt !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.02em !important;
+  }
+
+  h3 {
+    margin-top: 5mm !important;
+    margin-bottom: 2mm !important;
+    color: #111 !important;
+    font-size: 13pt !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  p, li, blockquote, .important-note, .stat-tile span {
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+  }
+
+  p, ul, ol, blockquote, .important-note, .text-block, .step, .stat-tile, .imprint-section {
+    orphans: 3;
+    widows: 3;
+  }
+
+  a {
+    color: #111 !important;
+    text-decoration: underline !important;
+  }
+
+  .hero-card__quote,
+  .editorial-quote,
+  .important-note {
+    margin: 5mm 0 !important;
+    padding: 4mm 5mm !important;
+    border: 1px solid #d8d8d4 !important;
+    border-left: 3mm solid #ffdc00 !important;
+    border-radius: 3mm !important;
+    background: #f7f7f4 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4mm !important;
+    margin: 5mm 0 !important;
+  }
+
+  .stat-tile {
+    padding: 4mm !important;
+    border: 1px solid #deded9 !important;
+    border-radius: 3mm !important;
+    background: #f8f8f5 !important;
+    break-inside: avoid;
+  }
+
+  .stat-tile strong,
+  .mega-stat {
+    color: #111 !important;
+  }
+
+  .country-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 2.5mm !important;
+  }
+
+  .country-grid span {
+    padding: 2.5mm 3mm !important;
+    border-radius: 2mm !important;
+    background: #f1f1ed !important;
+    color: #111 !important;
+  }
+
+  .inline-figure {
+    display: block !important;
+    max-width: 100% !important;
+    max-height: 92mm !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: 6mm auto 0 !important;
+    border-radius: 3mm !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .step {
+    display: grid !important;
+    grid-template-columns: 12mm 1fr !important;
+    gap: 4mm !important;
+    padding: 4mm 0 !important;
+    border-top: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+
+  .step__number {
+    width: 10mm !important;
+    height: 10mm !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 2.5mm !important;
+    background: #ffdc00 !important;
+    color: #111 !important;
+  }
+
+  .cta-row,
+  .primary-cta,
+  .secondary-cta {
+    display: none !important;
+  }
+
+  .sources-list {
+    padding-left: 6mm !important;
+  }
+
+  .sources-list li {
+    margin-bottom: 2.5mm !important;
+    break-inside: avoid;
+  }
+
+  .video-card {
+    display: block !important;
+  }
+
+  .phone-stage {
+    margin-top: 6mm !important;
+  }
+
+  .phone-stage video {
+    display: none !important;
+  }
+
+  .print-video-poster {
+    display: block !important;
+    width: 54mm !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    border-radius: 5mm !important;
+  }
+
+  .imprint-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 5mm 7mm !important;
+    margin-top: 6mm !important;
+  }
+
+  .imprint-section {
+    padding-top: 4mm !important;
+    border-top: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+
+  .imprint-section--full {
+    grid-column: 1 / -1 !important;
+  }
+}

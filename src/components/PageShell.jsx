@@ -49,6 +49,12 @@ export default function PageShell({ page, index, total, nextId, previousId, star
         <div className="story-page__scrim" />
       </div>
 
+      {page.background && (
+        <figure className="print-chapter-image" aria-hidden="true">
+          <img src={page.background} alt="" />
+        </figure>
+      )}
+
       <div className="story-page__inner">{children}</div>
 
       <div className="scroll-controls" aria-label="Kapitel-Navigation">

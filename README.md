@@ -175,3 +175,15 @@ Die Fullscreen-Ansicht unterstützt:
 - Verantwortliche für journalistisch-redaktionelle Inhalte nach § 18 Abs. 2 MStV
 - Bildnachweise
 - kein Hintergrundbild im Impressum; ruhige helle Abschlussfläche
+
+
+## v16 – Druck-PDF
+
+- PDF-Button rechts oben neben der Inhaltsübersicht
+- Browser-Druckdialog via `window.print()`
+- DIN A4 Hochformat (`@page { size: A4 portrait; }`)
+- jedes Kapitel startet auf einer neuen Seite
+- Hintergrundbilder werden im Druck als echte Kapitelabbildungen ausgegeben
+- Navigation, Scroll-Steuerung, Lightbox und interaktive Buttons werden im Druck ausgeblendet
+- Video wird im PDF über das Posterbild repräsentiert
+- Tracking-Event: `print_pdf_open`

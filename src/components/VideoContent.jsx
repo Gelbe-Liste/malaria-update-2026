@@ -22,6 +22,7 @@ export default function VideoContent({ page }) {
         </a>
       </div>
       <div className="phone-stage">
+        <img className="print-video-poster" src="/assets/images/app-thumbnail.jpg" alt="Gelbe Liste App" />
         <video
           ref={ref}
           src="/assets/video/gelbe-liste-app.mp4"
