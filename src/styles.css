@@ -993,3 +993,59 @@ button.secondary-cta {
     --story-bg-opacity: .72;
   }
 }
+
+/* ================================================================
+   Uniform white background de-emphasis (v11)
+   All story images are faded toward white; no darkening anywhere.
+   Fullscreen/lightbox graphics remain untouched.
+   ================================================================ */
+:root {
+  --story-bg-opacity: .68;
+  --story-white-wash: rgba(255,255,255,.22);
+}
+
+.story-page--dark,
+.story-page--light {
+  background: #fff;
+}
+
+.story-page__background,
+.story-page--dark .story-page__background,
+.story-page--light .story-page__background {
+  opacity: var(--story-bg-opacity);
+  filter: saturate(.84) contrast(.90) brightness(1.08);
+}
+
+/* Replace all former dark/light scrims with the same subtle white wash. */
+.story-page__scrim,
+.story-page--dark .story-page__scrim,
+.story-page--dark.story-page--right .story-page__scrim,
+.story-page--light .story-page__scrim {
+  background: var(--story-white-wash);
+}
+
+/* The dedicated image viewer always shows the original graphic at full strength. */
+.image-lightbox,
+.image-lightbox__stage {
+  --story-bg-opacity: 1;
+}
+
+.image-lightbox img,
+.image-lightbox__stage img {
+  opacity: 1;
+  filter: none;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --story-bg-opacity: .64;
+    --story-white-wash: rgba(255,255,255,.25);
+  }
+
+  .story-page__scrim,
+  .story-page--dark .story-page__scrim,
+  .story-page--dark.story-page--right .story-page__scrim,
+  .story-page--light .story-page__scrim {
+    background: var(--story-white-wash);
+  }
+}
