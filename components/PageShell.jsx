@@ -1,0 +1,131 @@
+import { useEffect, useRef, useState } from "react";
+import { trackEvent, trackOnce } from "../tracking/piano";
+import ImageLightbox from "./ImageLightbox";
+
+export default function PageShell({ page, index, total, nextId, previousId, startId, onActive, children, long = false }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(index === 0);
+  const [imageOpen, setImageOpen] = useState(false);
+  const zoomableImage = ["kernaussagen", "who-zahlen"].includes(page.id);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.12);
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+          onActive(index);
+          trackOnce(`chapter-${page.id}`, "chapter_view", {
+            chapter_id: page.id,
+            chapter_number: index + 1,
+            chapter_title: page.nav
+          });
+        }
+      },
+      { threshold: [0.12, 0.2, 0.35, 0.55, 0.75] }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [index, onActive, page]);
+
+  const scrollTo = (targetId) => {
+    if (!targetId) return;
+    document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <section
+      ref={ref}
+      id={page.id}
+      className={`story-page story-page--${page.tone} story-page--${page.align} ${long ? "story-page--long" : ""} ${visible ? "is-visible" : ""}`}
+    >
+      <div
+        className="story-page__background"
+        style={{
+          backgroundImage: `url("${page.background}")`,
+          backgroundPosition: page.focal || "center center"
+        }}
+      >
+        <div className="story-page__scrim" />
+      </div>
+      <div className="story-page__inner">
+        {zoomableImage ? (
+          <div className={`zoomable-card-shell ${page.id === "who-zahlen" || page.id === "kernaussagen" ? "zoomable-card-shell--wide" : ""}`}>
+            {children}
+            <div className="image-view-button-row">
+              <button
+                className="image-view-button"
+                onClick={() => {
+                  setImageOpen(true);
+                  trackEvent("image_view_open", {
+                    chapter_id: page.id,
+                    image_src: page.background,
+                    module_id: "malaria-update-2025"
+                  });
+                }}
+                aria-label="Grafik öffnen"
+              >
+                <span className="image-view-button__icon" aria-hidden="true">⌕</span>
+                <span>Grafik öffnen</span>
+              </button>
+            </div>
+          </div>
+        ) : children}
+      </div>
+
+      <div className="scroll-controls" aria-label="Kapitel-Navigation">
+        <button
+          className="scroll-button scroll-button--down"
+          onClick={() => scrollTo(nextId)}
+          aria-label={nextId ? "Zum nächsten Kapitel" : "Kein weiteres Kapitel"}
+          disabled={!nextId}
+        >
+          <span aria-hidden="true">↓</span>
+        </button>
+        <button
+          className="scroll-button scroll-button--up"
+          onClick={() => scrollTo(previousId)}
+          aria-label={previousId ? "Zum vorherigen Kapitel" : "Kein vorheriges Kapitel"}
+          disabled={!previousId}
+        >
+          <span aria-hidden="true">↑</span>
+        </button>
+        <button
+          className="scroll-button scroll-button--top"
+          onClick={() => {
+            scrollTo(startId);
+            trackEvent("navigation_click", {
+              navigation_action: "scroll_to_top",
+              chapter_id: page.id,
+              module_id: "malaria-update-2025"
+            });
+          }}
+          aria-label="Zum Anfang der Anwendung"
+          title="Zum Anfang"
+        >
+          <span className="scroll-to-top-icon" aria-hidden="true">
+            <span className="scroll-to-top-icon__bar" />
+            <span className="scroll-to-top-icon__arrow">↑</span>
+          </span>
+        </button>
+      </div>
+
+      <ImageLightbox
+        open={imageOpen}
+        image={page.background}
+        title={page.kicker || page.nav}
+        chapterId={page.id}
+        onClose={() => {
+          setImageOpen(false);
+          trackEvent("image_view_close", {
+            chapter_id: page.id,
+            module_id: "malaria-update-2025"
+          });
+        }}
+      />
+    </section>
+  );
+}
