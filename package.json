@@ -1,7 +1,7 @@
 {
   "name": "gelbe-liste-malaria-scrollytelling",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "engines": {
     "node": "22.x"
@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "jspdf": "4.2.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "5.2.0",

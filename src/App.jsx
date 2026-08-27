@@ -12,11 +12,12 @@ import SourcesContent from "./components/SourcesContent";
 import VideoContent from "./components/VideoContent";
 import ImprintContent from "./components/ImprintContent";
 import ImageLightbox from "./components/ImageLightbox";
+import { generateMalariaPdf } from "./pdf/generatePdf";
 import { trackEvent, trackOnce } from "./tracking/piano";
 
 const ZOOMABLE_CHAPTERS = new Set(["kernaussagen", "who-zahlen"]);
 
-function PageContent({ page, onOpenGraphic }) {
+function PageContent({ page, onOpenGraphic, onPdf, pdfGenerating }) {
   const graphicHandler = ZOOMABLE_CHAPTERS.has(page.id) ? onOpenGraphic : undefined;
 
   switch (page.kind) {
@@ -27,7 +28,7 @@ function PageContent({ page, onOpenGraphic }) {
     case "steps":
       return <StepsContent page={page} />;
     case "sources":
-      return <SourcesContent page={page} />;
+      return <SourcesContent page={page} onPdf={onPdf} pdfGenerating={pdfGenerating} />;
     case "video":
       return <VideoContent page={page} />;
     case "imprint":
@@ -41,6 +42,8 @@ export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGraphic, setOpenGraphic] = useState(null);
+  const [pdfGenerating, setPdfGenerating] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState(0);
 
   const handleActive = useCallback((index) => {
     setActiveIndex(index);
@@ -69,16 +72,37 @@ export default function App() {
     setOpenGraphic(null);
   }, [openGraphic]);
 
-  const handlePrint = useCallback(() => {
-    trackEvent("print_pdf_open", {
+  const handlePdf = useCallback(async () => {
+    if (pdfGenerating) return;
+    setPdfGenerating(true);
+    setPdfProgress(1);
+    trackEvent("pdf_generate_start", {
       module_id: "malaria-update-2025",
       format: "A4_portrait"
     });
 
-    // Open the native print dialog directly from the user click.
-    // This is more reliable on Safari/iOS and browsers with user-gesture restrictions.
-    window.print();
-  }, []);
+    try {
+      const result = await generateMalariaPdf({ onProgress: setPdfProgress });
+      trackEvent("pdf_generate_complete", {
+        module_id: "malaria-update-2025",
+        format: "A4_portrait",
+        pdf_pages: result.pages,
+        pdf_size_bytes: result.size
+      });
+    } catch (error) {
+      console.error("PDF generation failed", error);
+      trackEvent("pdf_generate_error", {
+        module_id: "malaria-update-2025",
+        error_message: String(error?.message || error)
+      });
+      window.alert("Das PDF konnte nicht erstellt werden. Bitte versuchen Sie es erneut.");
+    } finally {
+      window.setTimeout(() => {
+        setPdfGenerating(false);
+        setPdfProgress(0);
+      }, 500);
+    }
+  }, [pdfGenerating]);
 
   useEffect(() => {
     trackOnce("page-display", "page.display", {
@@ -121,7 +145,14 @@ export default function App() {
 
   return (
     <>
-      <TopBar activeIndex={activeIndex} pages={pages} onMenu={() => setMenuOpen(true)} onPrint={handlePrint} />
+      <TopBar
+        activeIndex={activeIndex}
+        pages={pages}
+        onMenu={() => setMenuOpen(true)}
+        onPdf={handlePdf}
+        pdfGenerating={pdfGenerating}
+        pdfProgress={pdfProgress}
+      />
       <ProgressRail pages={pages} activeIndex={activeIndex} />
       <MenuOverlay open={menuOpen} pages={pages} activeIndex={activeIndex} onClose={() => setMenuOpen(false)} />
 
@@ -138,7 +169,7 @@ export default function App() {
             onActive={handleActive}
             long={["who-zahlen", "beratung", "chemoprophylaxe", "standby", "resistenzen", "literatur", "impressum"].includes(page.id)}
           >
-            <PageContent page={page} onOpenGraphic={() => handleOpenGraphic(page)} />
+            <PageContent page={page} onOpenGraphic={() => handleOpenGraphic(page)} onPdf={handlePdf} pdfGenerating={pdfGenerating} />
           </PageShell>
         ))}
       </main>

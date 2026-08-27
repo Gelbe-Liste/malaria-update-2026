@@ -1434,3 +1434,37 @@ button.secondary-cta {
     flex: 0 0 42px !important;
   }
 }
+
+/* =========================================================
+   Client-side PDF generation state (v19)
+   ========================================================= */
+.pdf-button:disabled {
+  cursor: progress;
+  opacity: 1;
+}
+
+.pdf-button.is-generating {
+  background: var(--yellow, #ffdc00) !important;
+}
+
+.pdf-button__progress {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  color: #111;
+  font-variant-numeric: tabular-nums;
+}
+
+.secondary-cta[type="button"] {
+  font: inherit;
+  cursor: pointer;
+}
+
+.secondary-cta[type="button"]:disabled {
+  cursor: progress;
+  opacity: .7;
+}

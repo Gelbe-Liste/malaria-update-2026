@@ -2,8 +2,7 @@ import ContentCard from "./ContentCard";
 import { sources, sourceLinks } from "../content";
 import { trackEvent } from "../tracking/piano";
 
-export default function SourcesContent({ page }) {
-  const download = () => trackEvent("pdf_download", { file_name: "Malaria-Update-2025.pdf", chapter_id: page.id });
+export default function SourcesContent({ page, onPdf, pdfGenerating = false }) {
   const outbound = (label, url) => trackEvent("outbound_click", { link_label: label, destination_url: url, chapter_id: page.id });
 
   return (
@@ -20,14 +19,15 @@ export default function SourcesContent({ page }) {
         >
           Weitere aktuelle reisemedizinische Informationen
         </a>
-        <a
+        <button
+          type="button"
           className="secondary-cta"
-          href="/assets/downloads/Malaria-Update-2025.pdf"
-          download
-          onClick={download}
+          onClick={onPdf}
+          disabled={pdfGenerating}
+          aria-busy={pdfGenerating}
         >
-          „Malaria-Update 2025“ als PDF herunterladen
-        </a>
+          {pdfGenerating ? "PDF wird erstellt ..." : "Malaria-Update 2025 als PDF erstellen"}
+        </button>
       </div>
       <ol className="sources-list">
         {sources.map((source, index) => (

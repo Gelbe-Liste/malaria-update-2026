@@ -194,3 +194,15 @@ Die Fullscreen-Ansicht unterstützt:
 - Print dialog now opens directly from the user click.
 - Header grid supports two right-side controls.
 - PDF and menu controls are forced to equal square dimensions with rounded corners.
+
+## v19 – echte clientseitige PDF-Erzeugung
+
+Der PDF-Button verwendet nicht mehr `window.print()`. Stattdessen wird mit `jsPDF` direkt im Browser eine A4-Hochformat-PDF erstellt und als `Malaria-Update-2025_Gelbe-Liste.pdf` gespeichert.
+
+- kein automatischer Druckdialog
+- keine iOS-Safari-Abfrage zum automatischen Drucken
+- Text bleibt als Vektortext scharf
+- Kapitelbilder werden in die PDF eingebettet
+- jedes Kapitel startet auf einer neuen A4-Seite
+- Quellen und Impressum werden mit ausgegeben
+- Fortschritt wird direkt im PDF-Button angezeigt
