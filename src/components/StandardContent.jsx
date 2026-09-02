@@ -1,15 +1,28 @@
 import ContentCard from "./ContentCard";
+import InlineGraphic from "./InlineGraphic";
 
 function Quote({ children }) {
   return <blockquote className="editorial-quote">{children}</blockquote>;
 }
 
 export default function StandardContent({ page, onOpenGraphic }) {
+  const hasInlineGraphic = Boolean(page.inlineImage);
+
   return (
-    <ContentCard wide={page.id === "who-zahlen" || page.id === "resistenzen"}>
+    <ContentCard wide={page.id === "who-zahlen" || page.id === "resistenzen" || hasInlineGraphic}>
       <p className="page-kicker">{page.kicker}</p>
       <h2>{page.title}</h2>
       {page.subtitle && <p className="page-subtitle">{page.subtitle}</p>}
+
+      {page.inlineImage && (
+        <InlineGraphic
+          src={page.inlineImage}
+          alt={page.inlineImageAlt || page.title}
+          className="inline-figure--chapter"
+          onOpenGraphic={onOpenGraphic}
+        />
+      )}
+
       {page.paragraphs?.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
       {page.heading && <h3>{page.heading}</h3>}
       {page.bullets && (
@@ -31,9 +44,9 @@ export default function StandardContent({ page, onOpenGraphic }) {
       {page.quote && <Quote>{page.quote}</Quote>}
       {page.note && <div className="important-note">{page.note}</div>}
 
-      {onOpenGraphic && (
+      {onOpenGraphic && !hasInlineGraphic && (
         <div className="graphic-open-row">
-          <button className="graphic-open-button" onClick={onOpenGraphic} aria-label="Grafik öffnen">
+          <button type="button" className="graphic-open-button" onClick={onOpenGraphic} aria-label="Grafik öffnen">
             <span className="graphic-open-button__icon" aria-hidden="true">⌕</span>
             <span>Grafik öffnen</span>
           </button>

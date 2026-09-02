@@ -18,7 +18,7 @@ import { trackEvent, trackOnce } from "./tracking/piano";
 const ZOOMABLE_CHAPTERS = new Set(["kernaussagen", "who-zahlen"]);
 
 function PageContent({ page, onOpenGraphic, onPdf, pdfGenerating }) {
-  const graphicHandler = ZOOMABLE_CHAPTERS.has(page.id) ? onOpenGraphic : undefined;
+  const graphicHandler = page.inlineImage || ZOOMABLE_CHAPTERS.has(page.id) ? onOpenGraphic : undefined;
 
   switch (page.kind) {
     case "hero":
@@ -57,7 +57,7 @@ export default function App() {
     setOpenGraphic(page);
     trackEvent("image_view_open", {
       chapter_id: page.id,
-      image_src: page.background,
+      image_src: page.inlineImage || page.background,
       module_id: "malaria-update-2025"
     });
   }, []);
@@ -176,7 +176,7 @@ export default function App() {
 
       <ImageLightbox
         open={Boolean(openGraphic)}
-        image={openGraphic?.background}
+        image={openGraphic?.inlineImage || openGraphic?.background}
         title={openGraphic?.kicker || openGraphic?.nav || "Grafik"}
         chapterId={openGraphic?.id}
         onClose={handleCloseGraphic}
