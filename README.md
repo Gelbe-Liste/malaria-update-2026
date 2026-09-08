@@ -66,23 +66,29 @@ Die wichtigsten UI-Komponenten liegen in:
 
 `src/components/`
 
-## Piano Analytics
+## Piano Analytics – Stand Mastertemplate v5 / 08.09.2026
 
-`src/tracking/piano.js` erkennt automatisch eine vorhandene globale Piano-Analytics-Instanz unter `window.pa`.
+Das Projekt verwendet jetzt dieselbe Tracking-Schicht und Vidal-/Gelbe-Liste-Semantik wie das med.i.scroll-Mastertemplate v5.
 
-Vorbereitete Events:
+Wiederverwendete Events:
 
-- `page.display`
-- `chapter_view`
-- `scroll_depth` (25/50/75/100)
-- `module_complete`
-- `pdf_download`
-- `outbound_click`
-- `video_start`
-- `video_pause`
-- `video_complete`
+- `page.display` – initialer Aufruf
+- `click.action` – Grafik, PDF, externe Links/CTA, Navigation und Menü
+- `pop_in.display` – Anzeige des Kapitelmenüs
 
-Ist Piano noch nicht eingebunden, werden Events im Development-Modus in der Konsole ausgegeben und zusätzlich in `window.__MALARIA_TRACKING__` gesammelt.
+Projektbezogene Custom Events:
+
+- `chapter.display` – Kapitel erstmals zu mindestens 35 % sichtbar
+- `page.scroll` – Scroll-Milestones 25/50/75/100
+- `video.start`, `video.progress`, `video.complete` – Video-Reporting
+
+Die frühere Eventstruktur `chapter_view`, `scroll_depth`, `module_complete`, `image_view_*`, `outbound_click`, `navigation_click`, `pdf_generate_*` und `video_*` wird nicht mehr als eigene Business-Semantik verwendet.
+
+Zentrale technische Konfiguration: `src/tracking/piano.js`; Projekt-/Analytics-Metadaten: `src/project.js`. Die redaktionellen Inhalte bleiben unverändert in `src/content.js`.
+
+Im gelieferten Projektstand ist `VITE_PIANO_ENABLED=false`. Erst nach Validierung der neuen Custom Properties/Events im Piano Data Model und interner Freigabe produktiv auf `true` setzen. Site-ID und Collection Domain sind bereits gemäß Mastertemplate v5 vorbereitet.
+
+Details siehe `PIANO-ANALYTICS.md`.
 
 ## Assets
 
@@ -127,7 +133,7 @@ Die Kapitelsteuerung enthält drei konsistent gestaltete Buttons:
 - ↑ vorheriger Abschnitt
 - Pfeil nach oben mit Abschlusslinie: direkt zum Anfang der Anwendung
 
-Der Sprung zum Anfang wird zusätzlich als `navigation_click` mit `navigation_action: scroll_to_top` für das vorbereitete Piano-Tracking erfasst.
+Historischer Stand: Der Sprung zum Anfang wurde zunächst als `navigation_click` erfasst. Seit der Piano-v5-Migration vom 08.09.2026 läuft die Navigation einheitlich über `click.action`.
 
 ## v4 UI refinement
 
@@ -152,7 +158,7 @@ Die Fullscreen-Ansicht unterstützt:
 - Pinch-Zoom auf Touch-Geräten
 - Mausrad-Zoom am Desktop
 - ESC bzw. Schließen-Button
-- Piano-Events `image_view_open`, `image_zoom`, `image_view_close`
+- Historischer Stand: `image_view_open`, `image_zoom`, `image_view_close`; seit 08.09.2026 auf `click.action` mit Grafik-Properties migriert
 
 `src/content.js` wurde für dieses Update nicht verändert.
 

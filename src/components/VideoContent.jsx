@@ -1,9 +1,30 @@
 import { useRef } from "react";
 import ContentCard from "./ContentCard";
-import { trackEvent, trackOnce } from "../tracking/piano";
+import { sanitizeDestinationPath, trackEvent, trackOnce } from "../tracking/piano";
 
-export default function VideoContent({ page }) {
+export default function VideoContent({ page, project }) {
   const ref = useRef(null);
+  const name = "Gelbe Liste App";
+  const videoId = "gelbe-liste-app-video";
+  const pageName = project.meta.analytics.page;
+  const ctaUrl = "https://www.gelbe-liste.de/service/gelbe-liste-app";
+
+  const onTimeUpdate = () => {
+    const video = ref.current;
+    if (!video?.duration) return;
+    const percent = Math.floor((video.currentTime / video.duration) * 100);
+    for (const milestone of [25, 50, 75]) {
+      if (percent >= milestone) {
+        trackOnce(`video-progress-${page.id}-${milestone}`, "video.progress", {
+          page: pageName,
+          chapter_id: page.id,
+          video_id: videoId,
+          video_name: name,
+          progress_percent: milestone
+        });
+      }
+    }
+  };
 
   return (
     <ContentCard wide className="video-card">
@@ -11,13 +32,16 @@ export default function VideoContent({ page }) {
         <p className="page-kicker">{page.kicker}</p>
         <h2>{page.title}</h2>
         <p className="page-subtitle">{page.subtitle}</p>
-        <a
-          className="primary-cta"
-          href="https://www.gelbe-liste.de/service/gelbe-liste-app"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => trackEvent("outbound_click", { link_label: "Gelbe Liste App", chapter_id: page.id })}
-        >
+        <a className="primary-cta" href={ctaUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent("click.action", {
+          pop_in_type: "CTA",
+          pop_in_name: "Gelbe Liste App",
+          click: "Open external link",
+          page: pageName,
+          chapter_id: page.id,
+          element_id: "gelbe-liste-app-cta",
+          destination_path: sanitizeDestinationPath(ctaUrl),
+          trigger_source: "video_chapter"
+        })}>
           Mehr zur Gelbe Liste App
         </a>
       </div>
@@ -30,9 +54,9 @@ export default function VideoContent({ page }) {
           playsInline
           preload="metadata"
           poster="/assets/images/app-thumbnail.jpg"
-          onPlay={() => trackOnce("video-start", "video_start", { video_name: "Gelbe Liste App", chapter_id: page.id })}
-          onPause={() => trackEvent("video_pause", { video_name: "Gelbe Liste App", current_time: Math.round(ref.current?.currentTime || 0) })}
-          onEnded={() => trackOnce("video-complete", "video_complete", { video_name: "Gelbe Liste App", chapter_id: page.id })}
+          onPlay={() => trackOnce(`video-start-${page.id}`, "video.start", { page: pageName, chapter_id: page.id, video_id: videoId, video_name: name })}
+          onTimeUpdate={onTimeUpdate}
+          onEnded={() => trackOnce(`video-complete-${page.id}`, "video.complete", { page: pageName, chapter_id: page.id, video_id: videoId, video_name: name, progress_percent: 100 })}
         />
       </div>
     </ContentCard>
