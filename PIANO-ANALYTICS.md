@@ -1,74 +1,33 @@
-# Piano Analytics – Malaria med.i.scroll / Stand Mastertemplate v5
+# Piano Analytics – Zielstand 08.10.2026 (Mapping v1.2)
 
-Stand: 08.09.2026
+## Format
 
-## Projektkontext
-
-- Technisches Projekt: `malaria-update-2026`
-- Sichtbarer/redaktioneller Titel im bestehenden Projekt: `Malaria-Update 2025`
-- Format: `med.i.scroll`
-- Medizinisches Fachgebiet: `Reisemedizin`
-- Indikation/Thema: `Malaria`
-
-Die redaktionellen Inhalte wurden bei dieser Migration bewusst nicht geändert. Die technische Projekt-ID orientiert sich am laufenden Projektordner, die sichtbaren Titel bleiben im bisherigen Stand erhalten.
-
-## Wiederverwendete Vidal-/Gelbe-Liste-Events
-
-- `page.display` – initialer Aufruf
-- `click.action` – Grafik, PDF, externe Links/CTA, Navigation und Menü
-- `pop_in.display` – Anzeige des Kapitelmenüs
-
-## Custom Events des med.i.scroll v5
-
-- `chapter.display` – Kapitel erstmals zu mindestens 35 % sichtbar
-- `page.scroll` – Scroll-Milestones 25/50/75/100
-- `video.start`
-- `video.progress` – 25/50/75 %
-- `video.complete`
-
-Nicht mehr als eigene Business-Events verwendet werden `chapter_view`, `scroll_depth`, `module_complete`, `image_view_*`, `outbound_click`, `navigation_click`, `pdf_generate_*`, `video_start`, `video_pause`, `video_complete`.
-
-## Projektbezogene Analytics-Konfiguration
-
-In `src/project.js`:
-
-- `project_id`: `malaria-update-2026`
-- `page`: `med.i.scroll | Malaria-Update 2025`
-- `page_type`: `Microsite`
+- `page_type`: `med.i.scroll`
+- `article_category`: `Krankheitsbild` (Pagetype aus der Vidal-Liste)
+- `de_page_category`: ["Infektiologie / Immunologie", "Reise"] (nur Werte aus Specialty + Content Type)
+- `is_PAP`: `1`
 - `visitor_type`: `Not logged`
-- `medicalField`: `Reisemedizin`
-- `indication`: `Malaria`
-- `article_category`: `MED.I.SCROLL`, `REISEMEDIZIN`
 
-Produktbezogene Properties bleiben leer, solange keine fachlich freigegebene Produktzuordnung vorliegt.
+Malaria-Update: Pagetype „Krankheitsbild“, Specialty „Infektiologie / Immunologie“, Content Type „Reise“.
 
-## Neue Custom Properties
+## Acquisition / UTM
 
-`project_id`, `chapter_id`, `chapter_number`, `chapter_title`, `content_type`, `scroll_rate`, `image_id`, `zoom_level`, `document_id`, `element_id`, `destination_path`, `trigger_source`, `entry_point`, `video_id`, `video_name`, `progress_percent`.
+Die frühere Custom-Property `entry_point` wird **nicht mehr verwendet**. Für Kampagnen- und Quellenattribution werden die in Piano bereits vorhandenen Dimensionen **UTM Medium**, **UTM Source** und **UTM Campaign** genutzt. Die konkrete UTM-Wertelogik für NFC, QR und Direct Link wird zentral mit Vidal Analytics/Marketing festgelegt.
 
-## Datenschutz / Consent
+## Product Properties
 
-Die Tracking-Schicht übernimmt die im Mastertemplate v5 vorbereitete `essential`-Konfiguration. `.gelbe-liste.de` wird nur dann als Cookie-Domain gesetzt, wenn die Anwendung tatsächlich auf einer Gelbe-Liste-Domain läuft. Login-/Personenfelder wie `user_id`, `occupation`, `speciality_function` und `exercise_mode` werden im Standalone-Projekt nicht erzeugt.
+`product_name`, `product_mol`, `product_titulaire`, `product_ATC_class_code`, `product_ATC_class_name` und `product_UCD10_codes` dürfen nur bei einer echten Pharmindex-API-Verknüpfung mit den dort gelieferten MMI-Bezeichnungen befüllt werden. In diesem Projekt werden sie daher aktuell nicht gesendet.
 
-## Aktivierung
+`box_names` ist Medibox-spezifisch und wird nicht verwendet.
 
-`.env` / Vercel:
+## Events
 
-```env
-VITE_PIANO_ENABLED=true
-VITE_PIANO_SITE_ID=640794
-VITE_PIANO_COLLECT_DOMAIN=https://rwwnhth.pa-cd.com
-```
+Bestandssemantik: `page.display`, `click.action`, `pop_in.display`.
 
-Im gelieferten Stand bleibt `VITE_PIANO_ENABLED=false`, bis die neuen Properties/Events im Piano Data Model validiert und intern freigegeben wurden.
+med.i.scroll Custom Events: `chapter.display`, `page.scroll` sowie – nur falls A/V Insights nicht Zielstandard wird – `video.start`, `video.progress`, `video.complete`. Projektabhängige Interaktionen wie Accordion/Workflow bleiben als bereits implementierte Custom Events bestehen und müssen vor Aktivierung im Piano Data Model freigegeben sein.
 
-## KPI-Mapping
+`page.display` wird weiterhin gesendet, aber im Template nicht eigenmächtig als `essential` in `consent_items.events` ergänzt, solange die Vidal-Consent-Zuordnung nicht final bestätigt ist.
 
-- Reach/Visits: `page.display`
-- Chapter Reach: `chapter.display`
-- Scroll Depth: `page.scroll` + `scroll_rate`
-- Completion: `page.scroll` + `scroll_rate=100`
-- Graphic Open Rate: `click.action` + `click="Open graphic"`
-- PDF Download Rate: `click.action` + `click="Download PDF"`
-- CTA CTR: `click.action` + `click="Open external link"`
-- Video: `video.start`, `video.progress`, `video.complete`
+## Deployment
+
+Tracking bleibt im Paket mit `VITE_PIANO_ENABLED=false` deaktiviert. Aktivierung erst nach Data-Model-, Privacy-/Essential- und Staging-QA. Site: `640794`, Collection Domain: `https://rwwnhth.pa-cd.com`.

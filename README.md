@@ -66,9 +66,9 @@ Die wichtigsten UI-Komponenten liegen in:
 
 `src/components/`
 
-## Piano Analytics – Stand Mastertemplate v5 / 08.09.2026
+## Piano Analytics – Stand Mapping v1.2 / 08.10.2026
 
-Das Projekt verwendet jetzt dieselbe Tracking-Schicht und Vidal-/Gelbe-Liste-Semantik wie das med.i.scroll-Mastertemplate v5.
+Das Projekt verwendet die aktuelle Tracking-Schicht auf Basis des Piano-Parameter-Mappings v1.2. `page_type` kennzeichnet das Format als `med.i.scroll`; `article_category` und `de_page_category` verwenden ausschließlich die bestehenden Vidal-Taxonomien. `entry_point` ist entfallen; Acquisition wird über die vorhandenen Piano-Dimensionen UTM Medium, UTM Source und UTM Campaign ausgewertet.
 
 Wiederverwendete Events:
 
@@ -86,7 +86,7 @@ Die frühere Eventstruktur `chapter_view`, `scroll_depth`, `module_complete`, `i
 
 Zentrale technische Konfiguration: `src/tracking/piano.js`; Projekt-/Analytics-Metadaten: `src/project.js`. Die redaktionellen Inhalte bleiben unverändert in `src/content.js`.
 
-Im gelieferten Projektstand ist `VITE_PIANO_ENABLED=false`. Erst nach Validierung der neuen Custom Properties/Events im Piano Data Model und interner Freigabe produktiv auf `true` setzen. Site-ID und Collection Domain sind bereits gemäß Mastertemplate v5 vorbereitet.
+Im gelieferten Projektstand ist `VITE_PIANO_ENABLED=false`. Erst nach Validierung der neuen Custom Properties/Events im Piano Data Model und interner Freigabe produktiv auf `true` setzen. Site-ID und Collection Domain sind vorbereitet. Zusätzlich gilt `is_PAP=1`; `box_names` wird nicht verwendet und `product_*` wird nur bei einer Pharmindex-API-Verknüpfung befüllt.
 
 Details siehe `PIANO-ANALYTICS.md`.
 

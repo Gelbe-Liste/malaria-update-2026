@@ -14,20 +14,14 @@ export const project = {
     projectId: "malaria-update-2026",
     analytics: {
       page: "med.i.scroll | Malaria-Update 2025",
-      pageType: "Microsite",
+      pageType: "med.i.scroll",
       visitorType: "Not logged",
       medicalField: "Reisemedizin",
       indication: "Malaria",
-      articleCategory: ["MED.I.SCROLL", "REISEMEDIZIN"],
+      articleCategory: ["Krankheitsbild"],
+      specialtyCategories: ["Infektiologie / Immunologie"],
+      contentTypeCategories: ["Reise"],
       tags: ["med.i.scroll", "Gelbe Liste", "Reisemedizin", "Malaria"],
-      product: {
-        name: "",
-        molecules: [],
-        titulaire: "",
-        atcClassCodes: [],
-        atcClassNames: [],
-        ucd10Codes: []
-      }
     },
     pdfFileName: "Malaria-Update-2025_Gelbe-Liste.pdf",
     pdfSubject: "Reisemedizin | Gelbe Liste",
