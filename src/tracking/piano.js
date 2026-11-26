@@ -1,7 +1,10 @@
+import { initPosthogTracking, setPosthogTrackingContext, sendToPosthog } from "./posthog.js";
 const sentOnce = new Set();
 const pendingEvents = [];
 let persistentContext = { is_PAP: 1 };
 let initPromise = null;
+let pianoAllowed = false;
+let latestPianoPage = null;
 
 typeof window !== "undefined" && (window.__MEDI_SCROLL_TRACKING__ = window.__MEDI_SCROLL_TRACKING__ || []);
 
@@ -36,6 +39,7 @@ const essentialProperties = [
   "click",
   // Ergänzungen für med.i.scroll – vor Livegang im Piano Data Model validieren
   "project_id",
+  "standalone_mode",
   "chapter_id",
   "chapter_number",
   "chapter_title",
@@ -50,7 +54,14 @@ const essentialProperties = [
   "target_chapter_id",
   "video_id",
   "video_name",
-  "progress_percent"
+  "progress_percent",
+  "accordion_id",
+  "accordion_title",
+  "accordion_group",
+  "interaction_state",
+  "slide_index",
+  "slide_total",
+  "slide_title"
 ];
 
 const essentialEvents = [
@@ -61,7 +72,9 @@ const essentialEvents = [
   "page.scroll",
   "video.start",
   "video.progress",
-  "video.complete"
+  "video.complete",
+  "accordion.toggle",
+  "workflow.slide"
 ];
 
 function cleanProperties(properties = {}) {
@@ -80,17 +93,17 @@ function configureConsentLayer() {
   }
 
   window.pdl = window.pdl || {};
-  window.pdl.requireConsent = true;
-  if (!essentialApproved) return; // Keine pauschale Essential-Klassifikation ohne Freigabe.
+  window.pdl.requireConsent = "v2";
   const previousConsent = window.pdl.consent || {};
   window.pdl.consent = {
     ...previousConsent,
     products: Array.from(new Set([...(previousConsent.products || []), "PA"])),
     defaultPreset: {
       ...(previousConsent.defaultPreset || {}),
-      PA: "essential"
+      PA: "opt-out" // Sicherer Standard; Opt-in erst bei bewusster Einwilligung.
     }
   };
+  if (!essentialApproved) return; // Keine pauschale Essential-Klassifikation ohne zusätzliche Freigabe.
 
   window.pdl.consent_items = window.pdl.consent_items || {};
   const previousPaItems = window.pdl.consent_items.PA || {};
@@ -129,7 +142,7 @@ function loadPianoSdk() {
 }
 
 function flushQueue() {
-  if (!window.pa?.sendEvent) return;
+  if (!pianoAllowed || !window.pa?.sendEvent) return;
   while (pendingEvents.length) {
     const queued = pendingEvents.shift();
     window.pa.sendEvent(queued.eventName, queued.properties);
@@ -159,51 +172,53 @@ export function sanitizeDestinationPath(url) {
 
 export function setTrackingContext(properties = {}) {
   persistentContext = cleanProperties({ ...persistentContext, ...properties });
-  if (pianoEnabled && window.pa?.setProperties) {
+  setPosthogTrackingContext(persistentContext);
+  if (pianoEnabled && pianoAllowed && window.pa?.setProperties) {
     window.pa.setProperties(persistentContext, { persistent: true });
   }
 }
 
-export function initPianoTracking(properties = {}) {
-  persistentContext = cleanProperties({ ...persistentContext, ...properties });
-  if (!pianoEnabled) {
-    if (import.meta.env.DEV) console.info("[Piano disabled]", persistentContext);
-    return Promise.resolve();
+function ensurePianoInitialized() {
+  if (!pianoEnabled || !pianoAllowed) return Promise.resolve();
+  if (window.pa?.sendEvent && initPromise) {
+    window.pa.consent?.setMode?.("opt-in");
+    return initPromise;
   }
   if (initPromise) return initPromise;
-
   initPromise = (async () => {
     configureConsentLayer();
     await loadPianoSdk();
-    if (!window.pa) throw new Error("Piano Analytics SDK ist nach dem Laden nicht verfügbar.");
-
-    window.pa.setConfigurations({
-      site: pianoSiteId,
-      collectDomain: pianoCollectDomain
-    });
-
-    if (Object.keys(persistentContext).length && window.pa.setProperties) {
-      window.pa.setProperties(persistentContext, { persistent: true });
-    }
-
+    const pa = window.pa;
+    if (!pa?.sendEvent) throw new Error("Piano Analytics SDK konnte nicht initialisiert werden.");
+    // Einwilligung könnte während des asynchronen SDK-Ladens widerrufen worden sein.
+    if (!pianoAllowed) { pa.consent?.setMode?.("opt-out"); return; }
+    pa.setConfigurations({site: pianoSiteId, collectDomain: pianoCollectDomain});
+    pa.consent?.setMode?.("opt-in");
+    if (Object.keys(persistentContext).length) pa.setProperties?.(persistentContext, { persistent: true });
     flushQueue();
-  })().catch((error) => {
-    console.warn("[Piano] Initialisierung fehlgeschlagen:", error);
-    initPromise = null; // Bei erneutem Versuch SDK-Laden wieder ermöglichen.
-  });
-
+  })().catch(error => { console.warn("[Piano] Initialisierung fehlgeschlagen:", error); initPromise = null; });
   return initPromise;
 }
 
+export function initPianoTracking(properties = {}) {
+  persistentContext = cleanProperties({ ...persistentContext, ...properties });
+  initPosthogTracking(persistentContext);
+  // VOR der ausdrücklichen Zustimmung kein Laden des Piano-SDK und keine Requests.
+  return ensurePianoInitialized();
+}
+
 export function trackEvent(eventName, properties = {}) {
+  // PostHog erhält die fachlichen Video-Events unabhängig von Pianos A/V-Insights-Flag.
+  sendToPosthog(eventName, properties);
   if (customVideoEventNames.has(eventName) && !customVideoEventsEnabled) return; // Nur wenn Custom Video statt A/V Insights freigegeben ist.
   const clean = cleanProperties(properties);
+  if (eventName === "page.display") latestPianoPage = { eventName, properties: clean, at: Date.now() };
   const debugPayload = { ...persistentContext, ...clean };
 
   window.__MEDI_SCROLL_TRACKING__?.push({ eventName, properties: debugPayload, at: Date.now() });
   if (import.meta.env.DEV || !pianoEnabled) console.info("[Tracking]", eventName, debugPayload);
 
-  if (!pianoEnabled) return;
+  if (!pianoEnabled || !pianoAllowed) return;
   if (window.pa?.sendEvent) window.pa.sendEvent(eventName, clean);
   else pendingEvents.push({ eventName, properties: clean, at: Date.now() });
 }
@@ -212,4 +227,27 @@ export function trackOnce(key, eventName, properties = {}) {
   if (sentOnce.has(key)) return;
   sentOnce.add(key);
   trackEvent(eventName, properties);
+}
+
+// Einheitlicher Consent-Vertrag für Piano und PostHog, unabhängig schaltbar.
+if (typeof window !== "undefined") {
+  window.addEventListener("medi:analytics-consent", event => {
+    const next = event?.detail?.piano === true;
+    if (next === pianoAllowed) return;
+    pianoAllowed = next;
+    const pa = window.pa;
+    if (!next) {
+      pendingEvents.length = 0;
+      pa?.consent?.setMode?.("opt-out");
+      return;
+    }
+    if (!pianoEnabled) return;
+    void ensurePianoInitialized();
+    // Nur die aktuell angezeigte Seite nachmelden, keine vergangenen Interaktionen.
+    if (latestPianoPage) {
+      const page = latestPianoPage;
+      if (pa?.sendEvent) pa.sendEvent("page.display", page.properties);
+      else pendingEvents.push(page);
+    }
+  });
 }

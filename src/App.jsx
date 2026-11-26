@@ -13,6 +13,9 @@ import VideoContent from "./components/VideoContent";
 import ImprintContent from "./components/ImprintContent";
 import ImageLightbox from "./components/ImageLightbox";
 import { generateMalariaPdf } from "./pdf/generatePdf";
+import { getStandaloneMode } from "./tracking/displayMode";
+import AnalyticsConsent from "./consent/AnalyticsConsent";
+import PosthogDiagnostics from "./tracking/PosthogDiagnostics";
 import {
   initPianoTracking,
   sanitizePageUrl,
@@ -117,12 +120,13 @@ export default function App() {
   }, [pdfGenerating, activeIndex, pageName]);
 
   useEffect(() => {
-    initPianoTracking({ project_id: project.meta.projectId });
+    initPianoTracking({ project_id: project.meta.projectId, standalone_mode: getStandaloneMode() });
 
     document.title = project.meta.title;
     trackOnce("page-display", "page.display", {
       page: pageName,
       page_url: sanitizePageUrl(),
+      standalone_mode: getStandaloneMode(),
       de_page_category: [
         ...(project.meta.analytics.specialtyCategories || []),
         ...(project.meta.analytics.contentTypeCategories || [])
@@ -187,6 +191,8 @@ export default function App() {
         pageName={pageName}
         onClose={handleCloseGraphic}
       />
+      <AnalyticsConsent />
+      <PosthogDiagnostics />
     </>
   );
 }
