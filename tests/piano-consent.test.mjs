@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import ts from '/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript/lib/typescript.js';
 import { Buffer } from 'node:buffer';
 
 test('Piano SDK und Events warten auf Consent; Widerruf stoppt Übermittlung', async () => {
@@ -35,9 +34,6 @@ test('Piano SDK und Events warten auf Consent; Widerruf stoppt Übermittlung', a
       .replace(/^import \{ initPosthogTracking, setPosthogTrackingContext, sendToPosthog \} from "\.\/posthog\.js";/m,
         'const {initPosthogTracking,setPosthogTrackingContext,sendToPosthog}=globalThis.__PH_MOCK__;')
       .replaceAll('import.meta.env','globalThis.__TEST_ENV__');
-    if (fileUrl.pathname.endsWith('.ts')) source = ts.transpileModule(source,{
-      compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}
-    }).outputText;
     const piano = await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
     await piano.initPianoTracking({project_id:'check-consent'});
     piano.trackEvent('page.display',{page:'Home'});
